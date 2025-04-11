@@ -5,6 +5,23 @@
     <title>Clientes | CRUD</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+
+        .card {
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            font-weight: bold;
+            color: #343a40;
+        }
+
+        .table thead {
+            background-color: #198754;
+            color: white;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
@@ -45,9 +62,90 @@
                     <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody id="product-table-body"></tbody>
+            <tbody id="client-table-body"></tbody>
         </table>
     </div>
+
+    <script>
+        const apiUrl = 'http://localhost:5288/api/clients';
+
+        async function fetchClients() {
+            const res = await fetch(apiUrl);
+            const data = await res.json();
+            const tbody = document.getElementById('client-table-body');
+            tbody.innerHTML = '';
+            data.forEach(client => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+              <td>${client.id}</td>
+              <td>${client.nombre}</td>
+              <td>${client.correo}</td>
+              <td>${client.telefono}</td>
+              <td>
+                <button class="btn btn-sm btn-primary me-2" onclick="editClient(${client.id}, '${client.nombre}', '${client.correo}', '${client.telefono}')">Editar <i class="bi bi-pencil"></i></button>
+                <button class="btn btn-sm btn-danger" onclick="deleteClient(${client.id})">Eliminar <i class="bi bi-trash3"></i></button>
+              </td>
+            `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function editClient(id, nombre, correo, telefono) {
+            document.getElementById('client-id').value = id;
+            document.getElementById('client-name').value = nombre;
+            document.getElementById('client-email').value = correo;
+            document.getElementById('client-phone').value = telefono;
+        }
+
+        function resetForm() {
+            document.getElementById('client-id').value = '';
+        }
+
+        async function deleteClient(id) {
+            if (confirm('¿Estás seguro de eliminar este Cliente?')) {
+                await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
+                fetchClients();
+            }
+        }
+
+        document.getElementById('client-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('client-id').value;
+            const nombre = document.getElementById('client-name').value;
+            const correo = document.getElementById('client-email').value;
+            const telefono = document.getElementById('client-phone').value;
+
+            const client = { nombre, correo, telefono };
+            if (id) client.id = id;
+
+            console.log("Cliente enviado:", client);
+
+            try {
+                if (id) {
+                    await fetch(`${apiUrl}/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(client)
+                    });
+                } else {
+                    await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(client)
+                    });
+                }
+
+                e.target.reset();
+                resetForm();
+                await fetchClients();
+            } catch (err) {
+                console.error("Error al guardar el cliente:", err);
+            }
+        });
+
+
+        fetchClients();
+    </script>
 
 </body>
 </html>

@@ -13,6 +13,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Inyecta dependencias
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<ClientService>();
 
 // Agrega controladores y Swagger
 builder.Services.AddControllers();
