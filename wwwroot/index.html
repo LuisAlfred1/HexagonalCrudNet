@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Productos | CRUD</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <a href="clientes.html" class="btn btn-outline-success">Ir a Clientes <i class="bi bi-arrow-right"></i></a>
+        <h1 class="mb-4 text-center">Gestión de Productos <i class="bi bi-box"></i></h1>
+
+        <div class="card mb-4">
+            <div class="card-header">Agregar / Editar Producto</div>
+            <div class="card-body">
+                <form id="product-form">
+                    <input type="hidden" id="product-id" />
+                    <div class="mb-3">
+                        <label for="product-name" class="form-label">Nombre:</label>
+                        <input type="text" id="product-name" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="product-price" class="form-label">Precio:</label>
+                        <input type="number" id="product-price" class="form-control" required />
+                    </div>
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="reset" class="btn btn-secondary ms-2" onclick="resetForm()">Limpiar</button>
+                </form>
+            </div>
+        </div>
+
+        <h3>Listado de Productos</h3>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="product-table-body"></tbody>
+        </table>
+    </div>
+
+    <script>
+        const apiUrl = 'http://localhost:5288/api/products';
+
+        async function fetchProducts() {
+            const res = await fetch(apiUrl);
+            const data = await res.json();
+            const tbody = document.getElementById('product-table-body');
+            tbody.innerHTML = '';
+            data.forEach(product => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+              <td>${product.id}</td>
+              <td>${product.name}</td>
+              <td>Q${product.precio}</td>
+              <td>
+                <button class="btn btn-sm btn-primary me-2" onclick="editProduct(${product.id}, '${product.name}', ${product.precio})">Editar <i class="bi bi-pencil"></i></button>
+                <button class="btn btn-sm btn-danger" onclick="deleteProduct(${product.id})">Eliminar <i class="bi bi-trash3"></i></button>
+              </td>
+            `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function editProduct(id, name, precio) {
+            document.getElementById('product-id').value = id;
+            document.getElementById('product-name').value = name;
+            document.getElementById('product-price').value = precio;
+        }
+
+        function resetForm() {
+            document.getElementById('product-id').value = '';
+        }
+
+        async function deleteProduct(id) {
+            if (confirm('¿Estás seguro de eliminar este producto?')) {
+                await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
+                fetchProducts();
+            }
+        }
+
+        document.getElementById('product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('product-id').value;
+            const name = document.getElementById('product-name').value;
+            const precio = parseFloat(document.getElementById('product-price').value);
+
+            const product = { name, precio };
+            if (id) product.id = id;
+
+            console.log("Producto enviado:", product);
+
+            try {
+                if (id) {
+                    await fetch(`${apiUrl}/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(product)
+                    });
+                } else {
+                    await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(product)
+                    });
+                }
+
+                e.target.reset();
+                resetForm();
+                await fetchProducts();
+            } catch (err) {
+                console.error("Error al guardar el producto:", err);
+            }
+        });
+
+
+        fetchProducts();
+    </script>
+
+</body>
+</html>
+

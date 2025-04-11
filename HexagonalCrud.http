@@ -1,0 +1,6 @@
+@HexagonalCrud_HostAddress = http://localhost:5288
+
+GET {{HexagonalCrud_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
