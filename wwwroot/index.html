@@ -28,20 +28,26 @@
 
     <div class="container mt-5">
         <a href="clientes.html" class="btn btn-outline-success">Ir a Clientes <i class="bi bi-arrow-right"></i></a>
+
         <h1 class="mb-4 text-center">Gestión de Productos <i class="bi bi-box"></i></h1>
 
+        <div class="alert alert-info" role="alert">
+            CRUD para gestionar productos.
+            Puedes agregar, editar y eliminar clientes de la base de datos.
+        </div>
+
         <div class="card mb-4">
-            <div class="card-header">Agregar / Editar Producto</div>
+            <div class="card-header bg-success text-white">Agregar / Editar Producto</div>
             <div class="card-body">
                 <form id="product-form">
                     <input type="hidden" id="product-id" />
                     <div class="mb-3">
                         <label for="product-name" class="form-label">Nombre:</label>
-                        <input type="text" id="product-name" class="form-control" placeholder="nombre del producto" required />
+                        <input type="text" id="product-name" class="form-control" required />
                     </div>
                     <div class="mb-3">
                         <label for="product-price" class="form-label">Precio:</label>
-                        <input type="number" id="product-price" class="form-control" placeholder="precio del producto" required />
+                        <input type="number" id="product-price" class="form-control" placeholder="Q." required />
                     </div>
                     <button type="submit" class="btn btn-success">Guardar</button>
                     <button type="reset" class="btn btn-secondary ms-2" onclick="resetForm()">Limpiar</button>
@@ -51,7 +57,7 @@
 
         <h3>Listado de Productos</h3>
         <table class="table table-bordered table-striped">
-            <thead class="table-dark">
+            <thead class="table-success">
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>

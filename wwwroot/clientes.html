@@ -27,8 +27,13 @@
         <a href="index.html" class="btn btn-outline-success"><i class="bi bi-arrow-left"></i> Volver a Productos</a>
         <h1 class="mb-4 text-center">Gestión de Clientes <i class="bi bi-people-fill"></i></h1>
 
+        <div class="alert alert-info" role="alert">
+            CRUD para gestionar clientes.
+            Puedes agregar, editar y eliminar clientes de la base de datos.
+        </div>
+
         <div class="card mb-4">
-            <div class="card-header">Agregar / Editar Cliente</div>
+            <div class="card-header bg-success text-white">Agregar / Editar Cliente</div>
             <div class="card-body">
                 <form id="client-form">
                     <input type="hidden" id="client-id" />
@@ -38,21 +43,22 @@
                     </div>
                     <div class="mb-3">
                         <label for="client-email" class="form-label">Correo:</label>
-                        <input type="text" id="client-email" class="form-control" required />
+                        <input type="email" id="client-email" class="form-control" required />
                     </div>
                     <div class="mb-3">
                         <label for="client-phone" class="form-label">Teléfono:</label>
-                        <input type="text" id="client-phone" class="form-control" required />
+                        <input type="tel" id="client-phone" class="form-control" required />
                     </div>
                     <button type="submit" class="btn btn-success">Guardar</button>
                     <button type="reset" class="btn btn-secondary ms-2" onclick="resetForm()">Limpiar</button>
                 </form>
             </div>
         </div>
+        
 
-        <h3>Listado de Clientes</h3>
+        <h3 class="mt-4">Listado de Clientes</h3>
         <table class="table table-bordered table-striped">
-            <thead class="table-dark">
+            <thead class="table-success">
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
@@ -65,86 +71,86 @@
         </table>
     </div>
 
-    <script>
-        const apiUrl = 'http://localhost:5288/api/clients';
+        <script>
+            const apiUrl = 'http://localhost:5288/api/clients';
 
-        async function fetchClients() {
-            const res = await fetch(apiUrl);
-            const data = await res.json();
-            const tbody = document.getElementById('client-table-body');
-            tbody.innerHTML = '';
-            data.forEach(client => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-              <td>${client.id}</td>
-              <td>${client.nombre}</td>
-              <td>${client.correo}</td>
-              <td>${client.telefono}</td>
-              <td>
-                <button class="btn btn-sm btn-primary me-2" onclick="editClient(${client.id}, '${client.nombre}', '${client.correo}', '${client.telefono}')">Editar <i class="bi bi-pencil"></i></button>
-                <button class="btn btn-sm btn-danger" onclick="deleteClient(${client.id})">Eliminar <i class="bi bi-trash3"></i></button>
-              </td>
-            `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function editClient(id, nombre, correo, telefono) {
-            document.getElementById('client-id').value = id;
-            document.getElementById('client-name').value = nombre;
-            document.getElementById('client-email').value = correo;
-            document.getElementById('client-phone').value = telefono;
-        }
-
-        function resetForm() {
-            document.getElementById('client-id').value = '';
-        }
-
-        async function deleteClient(id) {
-            if (confirm('¿Estás seguro de eliminar este Cliente?')) {
-                await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
-                fetchClients();
+            async function fetchClients() {
+                const res = await fetch(apiUrl);
+                const data = await res.json();
+                const tbody = document.getElementById('client-table-body');
+                tbody.innerHTML = '';
+                data.forEach(client => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                          <td>${client.id}</td>
+                          <td>${client.nombre}</td>
+                          <td>${client.correo}</td>
+                          <td>${client.telefono}</td>
+                          <td>
+                            <button class="btn btn-sm btn-primary me-2" onclick="editClient(${client.id}, '${client.nombre}', '${client.correo}', '${client.telefono}')">Editar <i class="bi bi-pencil"></i></button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteClient(${client.id})">Eliminar <i class="bi bi-trash3"></i></button>
+                          </td>
+                        `;
+                    tbody.appendChild(tr);
+                });
             }
-        }
 
-        document.getElementById('client-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('client-id').value;
-            const nombre = document.getElementById('client-name').value;
-            const correo = document.getElementById('client-email').value;
-            const telefono = document.getElementById('client-phone').value;
+            function editClient(id, nombre, correo, telefono) {
+                document.getElementById('client-id').value = id;
+                document.getElementById('client-name').value = nombre;
+                document.getElementById('client-email').value = correo;
+                document.getElementById('client-phone').value = telefono;
+            }
 
-            const client = { nombre, correo, telefono };
-            if (id) client.id = id;
+            function resetForm() {
+                document.getElementById('client-id').value = '';
+            }
 
-            console.log("Cliente enviado:", client);
-
-            try {
-                if (id) {
-                    await fetch(`${apiUrl}/${id}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(client)
-                    });
-                } else {
-                    await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(client)
-                    });
+            async function deleteClient(id) {
+                if (confirm('¿Estás seguro de eliminar este Cliente?')) {
+                    await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
+                    fetchClients();
                 }
-
-                e.target.reset();
-                resetForm();
-                await fetchClients();
-            } catch (err) {
-                console.error("Error al guardar el cliente:", err);
             }
-        });
+
+            document.getElementById('client-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = document.getElementById('client-id').value;
+                const nombre = document.getElementById('client-name').value;
+                const correo = document.getElementById('client-email').value;
+                const telefono = document.getElementById('client-phone').value;
+
+                const client = { nombre, correo, telefono };
+                if (id) client.id = id;
+
+                console.log("Cliente enviado:", client);
+
+                try {
+                    if (id) {
+                        await fetch(`${apiUrl}/${id}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(client)
+                        });
+                    } else {
+                        await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(client)
+                        });
+                    }
+
+                    e.target.reset();
+                    resetForm();
+                    await fetchClients();
+                } catch (err) {
+                    console.error("Error al guardar el cliente:", err);
+                }
+            });
 
 
-        fetchClients();
-    </script>
-
+            fetchClients();
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
 </body>
 </html>
