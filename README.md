@@ -1,6 +1,6 @@
 # 📦 Proyecto CRUD con Arquitectura Hexagonal
 
-Este proyecto es un **CRUD** (Create, Read, Update, Delete) desarrollado como parte del parcial de la asignatura, implementando la **Arquitectura Hexagonal (Ports & Adapters)** para lograr una mejor separación de responsabilidades, independencia de frameworks y facilidad para pruebas unitarias.
+Este proyecto es un **CRUD** (Create, Read, Update, Delete) desarrollado como parte del parcial de Ingeniería de software, implementando la **Arquitectura Hexagonal (Ports & Adapters)** para lograr una mejor separación de responsabilidades, independencia de frameworks y facilidad para pruebas unitarias.
 
 ## 📌 Descripción
 
