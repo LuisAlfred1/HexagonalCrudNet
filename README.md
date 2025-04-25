@@ -13,11 +13,16 @@ El objetivo del proyecto es gestionar mediante una API estructurada en capas sig
 - Base de datos: `SQlite`
 
 ## ✅ Imagenes del proyecto terminado
+- Bienvenida
+![image](https://github.com/user-attachments/assets/d20f8804-a9d8-4ec9-94de-952c133677c0)
+
+
 - CRUD Productos
-![image](https://github.com/user-attachments/assets/134ed729-fc23-43a4-a426-f69195565d8d)
+![image](https://github.com/user-attachments/assets/cb7dc6df-ab7b-486f-932c-838afc0629da)
+
 
 - CRUD Clientes
-![image](https://github.com/user-attachments/assets/229c876b-c2f6-4cb7-9ab1-350993b1b5b3)
+![image](https://github.com/user-attachments/assets/b58ad1f8-1c9e-4bd3-850f-c83169c4946f)
 
 
   
