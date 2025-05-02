@@ -12,7 +12,7 @@ El objetivo del proyecto es gestionar mediante una API estructurada en capas sig
 - Framework: `Net`
 - Base de datos: `SQlite`
 
-## ✅ Imagenes del proyecto terminado
+## 📷 Vista previa
 - Bienvenida
 ![image](https://github.com/user-attachments/assets/d20f8804-a9d8-4ec9-94de-952c133677c0)
 
