@@ -9,7 +9,7 @@ El objetivo del proyecto es gestionar mediante una API estructurada en capas sig
 ## 🛠️ Tecnologías utilizadas
 
 - Lenguaje:  `C#` 
-- Framework: `Net`
+- Framework: `.Net`
 - Base de datos: `SQlite`
 
 ## 📷 Vista previa
